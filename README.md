@@ -1,0 +1,2 @@
+# CreateAWSOrgAccount
+Organizationsでメンバーアカウントをまとめて作成して指定したOUに移動するスクリプト
