@@ -48,6 +48,11 @@ waiter_config = {
 
 waiter_model = WaiterModel(waiter_config)
 org = boto3.client('organizations')
+custom_waiter = create_waiter_with_client(
+    waiter_name=waiter_name,
+    waiter_model=waiter_model,
+    client=org
+)
 
 for i in range(start, stop+1):
     str_i = str(i)
@@ -66,11 +71,6 @@ for i in range(start, stop+1):
     print(response)
     create_account_request_id = response.get('CreateAccountStatus').get('Id')
 
-    custom_waiter = create_waiter_with_client(
-        waiter_name=waiter_name,
-        waiter_model=waiter_model,
-        client=org
-    )
     custom_waiter.wait(
         CreateAccountRequestId=create_account_request_id
     )
