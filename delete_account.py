@@ -19,19 +19,19 @@ waiter_config = {
                 {
                     "matcher": "path",
                     "expected": "ACTIVE",
-                    "argument": "CloseAccountStatus.State",
+                    "argument": "Account.Status",
                     "state": "retry"
                 },
                 {
                     "matcher": "path",
                     "expected": "SUSPENDED",
-                    "argument": "CloseAccountStatus.State",
+                    "argument": "Account.Status",
                     "state": "success"
                 },
                 {
                     "matcher": "path",
                     "expected": "PENDING_CLOSURE",
-                    "argument": "CloseAccountStatus.State",
+                    "argument": "Account.Status",
                     "state": "failure"
                 }
             ],
