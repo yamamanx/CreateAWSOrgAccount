@@ -32,7 +32,7 @@ waiter_config = {
                     "matcher": "path",
                     "expected": "PENDING_CLOSURE",
                     "argument": "Account.Status",
-                    "state": "failure"
+                    "state": "retry"
                 }
             ],
         },
