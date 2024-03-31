@@ -1,7 +1,51 @@
 import boto3
 import sys
 
+from botocore.exceptions import WaiterError
+from botocore.waiter import WaiterModel
+from botocore.waiter import create_waiter_with_client
+
+delay = 10
+max_attempts = 30
+waiter_name = 'AccountClosed'
+waiter_config = {
+    'version': 2,
+    'waiters': {
+        'AccountClosed': {
+            'operation': 'DescribeAccount',
+            'delay': delay,
+            'maxAttempts': max_attempts,
+            'acceptors':[
+                {
+                    "matcher": "path",
+                    "expected": "ACTIVE",
+                    "argument": "CloseAccountStatus.State",
+                    "state": "retry"
+                },
+                {
+                    "matcher": "path",
+                    "expected": "SUSPENDED",
+                    "argument": "CloseAccountStatus.State",
+                    "state": "success"
+                },
+                {
+                    "matcher": "path",
+                    "expected": "PENDING_CLOSURE",
+                    "argument": "CloseAccountStatus.State",
+                    "state": "failure"
+                }
+            ],
+        },
+    },
+}
+
+waiter_model = WaiterModel(waiter_config)
 org = boto3.client('organizations')
+custom_waiter = create_waiter_with_client(
+    waiter_name=waiter_name,
+    waiter_model=waiter_model,
+    client=org
+)
 
 def get_account_id_by_ou(ouid):
     accounts = []
@@ -36,7 +80,11 @@ if __name__ == "__main__":
     ouid = sys.argv[1]
     accounts = get_account_id_by_ou(ouid)
     for account in accounts:
+        account_id = account['account_id']
         move_account(account_id, ouid)
         close_account(account_id)
+        custom_waiter.wait(
+            AccountId=account_id
+        )
 
     print('done')
