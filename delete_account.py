@@ -5,6 +5,7 @@ from botocore.exceptions import WaiterError
 from botocore.waiter import WaiterModel
 from botocore.waiter import create_waiter_with_client
 
+destination_parent_id='ou-xxxxxxx'
 delay = 10
 max_attempts = 30
 waiter_name = 'AccountClosed'
@@ -64,7 +65,7 @@ def move_account(account_id, ouid):
     org.move_account(
         AccountId=account_id, 
         SourceParentId=ouid, 
-        DestinationParentId='ou-xxxxxxxx'
+        DestinationParentId=destination_parent_id
     )
     print(account_id + ':moved')
     return True
