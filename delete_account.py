@@ -64,7 +64,7 @@ def move_account(account_id, ouid):
     org.move_account(
         AccountId=account_id, 
         SourceParentId=ouid, 
-        DestinationParentId='ou-hkry-3sd5bwja'
+        DestinationParentId='ou-xxxxxxxx'
     )
     print(account_id + ':moved')
     return True
